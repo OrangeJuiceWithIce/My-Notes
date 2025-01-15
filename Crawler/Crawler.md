@@ -33,7 +33,7 @@ Content-Type
 ---
 
 ## url的编码解码
-1.parse.quote()：编码
+1.parse.quote()：编码  
 2.parse.unquote()：解码
 ```python
 from urllib import parse
@@ -41,29 +41,29 @@ from urllib import parse
 q_wd='XXX'
 q_ASCII=parse.quote(q_wd)
 ```
-3.网页的编码方式：response.encoding属性和response.apparent_encoding属性
+3.网页的编码方式：response.encoding属性和response.apparent_encoding属性  
 **diff:**
 前者是http响应头声明的编码方式，后者是网页内容解析出的编码方式
 
 ---
 
 ## Requests库
-请求方法
-.request():构造请求对象
-.get():获取网页
-.head()：获取网页头信息
-.post():提交POST请求
-.put()：提交PUT请求
-.patch()：提交局部修改请求
-.delete():提交删除请求
+请求方法  
+.request():构造请求对象  
+.get():获取网页  
+.head()：获取网页头信息  
+.post():提交POST请求  
+.put()：提交PUT请求  
+.patch()：提交局部修改请求  
+.delete():提交删除请求  
 
 ---
 
 ## 反爬
 ### User-Agent 用户代理
-1.请求头中包含User-Agent
-2.User-Agent包含了请求方的操作系统、CPU类型、浏览器版本等信息(适应)
-3.在使用request发送的请求头中，User-Agent标明为python-requests
+1.请求头中包含User-Agent  
+2.User-Agent包含了请求方的操作系统、CPU类型、浏览器版本等信息(适应)  
+3.在使用request发送的请求头中，User-Agent标明为python-requests  
 **自定义请求头**
 往请求方法中传参
 ```python
@@ -73,9 +73,9 @@ url="XXX"
 header={}
 response=requests.get(url,headers=header)
 ```
-4.所有的网站的UA是一样的
-5.可以通过构建代理池(list)，随机作为header,降低相同UA的访问频率，降低网站封杀的可能。
-6.fake_useragent库可以随机生成UA
+4.所有的网站的UA是一样的  
+5.可以通过构建代理池(list)，随机作为header,降低相同UA的访问频率，降低网站封杀的可能  
+6.fake_useragent库可以随机生成UA  
 ```python
 import fake_useragent
 
@@ -115,7 +115,7 @@ f4
 |\W||非普通字符|
 |\S||非空白字符|
 |\D||非数字字符|
-|a\|b||a或b|t(first|second)|tfirst|
+|a\|b||a或b|t(first\|second)|tfirst|
 |[abc]||a、b、c中的任意一个字符|t[fgh]irst|tfirst|
 |[^abc]||a、b、c以外的任意一个字符|t[^g]irst|tfrist|
 ##### 量词
@@ -150,7 +150,7 @@ re_obj=re.compile("[a-z]+")
 talk_list_1=re_obj.findall(待匹配字符串)
 ```
 #### re爬取
-用括号圈出自己想要提取的部分
+用括号圈出自己想要提取的部分  
 PS:使用finditer()时，若想提取多个部分，需要在括号内开头用?P<组名>定义组名，然后在后续的操作中使用group('组名')提取
 ```python
 //list版本
@@ -190,7 +190,7 @@ print(film_list.group('组名1'))
 |lxml XML|BeautifulSoup(html,"xml")|
 |html5lib|BeautifulSoup(html,"html5lib")|
 
-BeautifulSoup对象.findall(标签名，筛选条件)
+BeautifulSoup对象.findall(标签名，筛选条件)  
 筛选结果.get("属性名")，返回属性值
 ```python
 from bs4 import BeautifulSoup(html,"lxml")
@@ -339,10 +339,10 @@ for i,data in enumerate(img_data):
             print("one image saved")
 ```
 ### 3.自动翻页
-循环修改url中的**pn参数**即可
-url中的键值对可以以字典形式存储，通过get()方法的params参数传入
-可以用ctrl+R(pycharm环境中)打开正则替换，使params符合字典格式key带''并,分割
-response.close()关闭连接
+循环修改url中的**pn参数**即可  
+url中的键值对可以以字典形式存储，通过get()方法的params参数传入  
+可以用ctrl+R(pycharm环境中)打开正则替换，使params符合字典格式key带''并,分割  
+response.close()关闭连接  
 ```python
 import requests
 import os
