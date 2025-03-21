@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="login_container">
+        <form id="login_form">
+            <div class="form_group">
+            <label class="form_label" for="username">用户名:</label>
+            <input class="form_input" type="text" id="username" name="username" required>
+            </div>
+            <div class="form_group">
+            <label class="form_label" for="password">密码:</label>
+            <input class="form_input" type="password" id="password" name="password" required>
+            </div>
+            <button class="form_submit_button" id="register_button" type="button">注册</button>
+            <button class="form_submit_button" id="login_button" type="submit">登录</button>
+        </form>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            console.log(token);
+            try {
+                const response = await fetch("http://localhost:8081/checkToken", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                if (data.code == 0) {
+                    alert("登录成功");
+                } else {
+                    alert("登录过期，请重新登录");
+                    localStorage.removeItem("token"); // 清除无效的 Token
+                }
+            } catch (error) {
+                console.log(error);
+                alert("请求出错");
+            }
+        }
+    });
+    document.getElementById("register_button").addEventListener("click",
+        async(e) => {
+            e.preventDefault();
+            const username=document.getElementById("username").value;
+            const password=document.getElementById("password").value;
+            try{
+                const response=await fetch("http://localhost:8081/register",{
+                    method:"POST",
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify({username,password})
+                })
+                const data=await response.json();
+                if(data.code==0){
+                    alert("注册成功");
+                }
+                else{
+                    alert("用户名已存在")
+                }
+            } catch (error){
+                console.log(error);
+                alert("请求出错");
+            }
+        }
+    )
+    document.getElementById("login_button").addEventListener("click",
+        async(e) => {
+            e.preventDefault();
+            const username=document.getElementById("username").value;
+            const password=document.getElementById("password").value;
+            
+            try{
+                const response=await fetch("http://localhost:8081/login",{
+                    method:"POST",
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify({username,password})
+                })
+                const data=await response.json();
+                if(data.code==0){
+                    alert("登录成功");
+                    localStorage.setItem("token",data.token);
+                }
+                else{
+                    alert("用户名或密码错误")
+                }
+            } catch (error){
+                console.log(error);
+                alert("请求出错");
+            }
+        }
+    )
+</script>
+</html>

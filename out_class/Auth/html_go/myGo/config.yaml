@@ -1,0 +1,3 @@
+database:
+  dsn: "root:liuhan73@tcp(127.0.0.1:3306)/auth_demo?charset=utf8mb4&parseTime=True&loc=Local"
+  max_open_conns: 10
